@@ -24,6 +24,15 @@ SC_MODULE(TestbenchModule) {
     sc_core::sc_port<sc_core::sc_signal_in_if<int>> status_input;
     double powerEstimation = 0.0;
     double energyEstimation = 0.0;
+    
+    // Add these new tracking variables
+    int previous_status = -1;
+    sc_core::sc_time last_transition_time;
+    int transition_count = 0;
+    
+    // Statistics arrays
+    double state_energy[6] = {0.0};
+    sc_core::sc_time state_duration[6];
 
     SC_CTOR(TestbenchModule) : status_input("input") {
         SC_THREAD(processing);
