@@ -77,6 +77,23 @@ SC_MODULE(TestbenchModule) {
             wait();
         }
     }
+    
+    void finalizeEnergy() {
+        if (previous_status >= 0) {
+            sc_core::sc_time final_time = sc_core::sc_time_stamp();
+            sc_core::sc_time duration = final_time - last_transition_time;
+            double duration_sec = duration.to_seconds();
+            
+            double final_power = getPowerForState(previous_status);
+            double final_energy = final_power * duration_sec;
+            
+            energyEstimation += final_energy;
+            
+            std::cout << "Final state " << previous_status 
+                     << " consumed " << final_energy << " J" << std::endl;
+            std::cout << "Total Energy: " << energyEstimation << " J" << std::endl;
+        }
+    }
 
 private:
     // Add this function but DON'T use it yet
@@ -146,6 +163,10 @@ int sc_main(int argc, char* argv[]) {
 
 	std::cout << "Simulation started..." << std::endl;
     sc_core::sc_start(1296000, sc_core::SC_SEC);
+    
+    // Add this line
+    testbench.finalizeEnergy();
+    
 	std::cout << "Simulation finished." << std::endl;
     std::cout << "-----------------------------" << std::endl << std::endl;
 
