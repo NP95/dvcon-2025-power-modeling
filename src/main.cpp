@@ -41,10 +41,22 @@ SC_MODULE(TestbenchModule) {
     }
 
     void processing() {
+        // Initialize time tracking
+        last_transition_time = sc_core::sc_time_stamp();
+        previous_status = -1;
+        
         while (true) {
             int status = status_input->read();
-            //TODO to be filled by you!
-
+            sc_core::sc_time current_time = sc_core::sc_time_stamp();
+            
+            // Add debug output to verify time tracking
+            if (previous_status >= 0) {
+                sc_core::sc_time duration = current_time - last_transition_time;
+                std::cout << "DEBUG: State " << previous_status 
+                         << " lasted " << duration.to_seconds() << " seconds" << std::endl;
+            }
+            
+            // Existing switch statement here (keep as is)
             switch(status) {
                 case 0: //Boot Status
                     std::cout << "Booting" << std::endl;
@@ -65,6 +77,11 @@ SC_MODULE(TestbenchModule) {
                     energyEstimation += 2.1;
                     break;
             }
+            
+            // Update tracking variables
+            previous_status = status;
+            last_transition_time = current_time;
+            transition_count++;
 
             wait();
         }
