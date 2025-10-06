@@ -36,3 +36,8 @@ Thumbs.db
 # Python cache
 __pycache__/
 *.pyc
+
+# Analysis files and outputs
+analysis/venv/
+analysis/output/
+PLAN.md

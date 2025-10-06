@@ -8,6 +8,15 @@
 
 #include <systemc>
 
+// Power constants for each state (in Watts)
+const double POWER_OFFICE = 1.0357;           // State 0: At Work (Office)
+const double POWER_NOT_AT_WORK = 1.0215;      // State 1: Not at Work
+const double POWER_REMOTE = 1.0284;           // State 2: At Work (Remote)
+const double POWER_OFFICE_BT = 1.0960;        // State 3: Office Bluetooth
+const double POWER_REMOTE_BT = 1.1500;        // State 4: Remote Bluetooth
+const double POWER_NOT_AT_WORK_BT = 1.0925;   // State 5: Not at Work Bluetooth
+const double POWER_DEFAULT = 1.0;             // Default power value
+
 /**
  * Testbench Module
  */
@@ -56,13 +65,13 @@ private:
     // Add this function but DON'T use it yet
     double getPowerForState(int state) {
         switch(state) {
-            case 0: return 1.0357;  // At Work (Office)
-            case 1: return 1.0215;  // Not at Work
-            case 2: return 1.0284;  // At Work (Remote)
-            case 3: return 1.0960;  // Office Bluetooth
-            case 4: return 1.1500;  // Remote Bluetooth
-            case 5: return 1.0925;  // Not at Work Bluetooth
-            default: return 1.0;
+            case 0: return POWER_OFFICE;
+            case 1: return POWER_NOT_AT_WORK;
+            case 2: return POWER_REMOTE;
+            case 3: return POWER_OFFICE_BT;
+            case 4: return POWER_REMOTE_BT;
+            case 5: return POWER_NOT_AT_WORK_BT;
+            default: return POWER_DEFAULT;
         }
     }
 };
