@@ -94,6 +94,23 @@ SC_MODULE(TestbenchModule) {
             std::cout << "Total Energy: " << energyEstimation << " J" << std::endl;
         }
     }
+    
+    void validateResults() {
+        double expected_energy = 4262.89;
+        double error = std::abs(energyEstimation - expected_energy);
+        double error_percent = (error / expected_energy) * 100.0;
+        
+        std::cout << "\n=== VALIDATION ===" << std::endl;
+        std::cout << "Expected energy: " << expected_energy << " J" << std::endl;
+        std::cout << "Calculated energy: " << energyEstimation << " J" << std::endl;
+        std::cout << "Error: " << error << " J (" << error_percent << "%)" << std::endl;
+        
+        if (error_percent < 1.0) {
+            std::cout << "✓ PASS: Within 1% tolerance" << std::endl;
+        } else {
+            std::cout << "✗ FAIL: Exceeds 1% tolerance" << std::endl;
+        }
+    }
 
 private:
     // Add this function but DON'T use it yet
@@ -155,6 +172,7 @@ int sc_main(int argc, char* argv[]) {
     
     // Add this line
     testbench.finalizeEnergy();
+    testbench.validateResults();  // Add this
     
 	std::cout << "Simulation finished." << std::endl;
     std::cout << "-----------------------------" << std::endl << std::endl;
