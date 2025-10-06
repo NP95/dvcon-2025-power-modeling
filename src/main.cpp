@@ -48,11 +48,11 @@ SC_MODULE(TestbenchModule) {
             switch(status) {
                 case 0: //Boot Status
                     std::cout << "Booting" << std::endl;
-                    powerEstimation += 1.6;
+                    powerEstimation = 1.6;  // Changed from += to =
                     break;
                 case 1: //Not Available
                     std::cout << "Employee not available" << std::endl;
-                    powerEstimation += 1.35;
+                    powerEstimation = 1.35;  // Changed from += to =
                     break;
                 case 2: //Available
                     std::cout << "Employee available" << std::endl;
