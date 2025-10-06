@@ -51,6 +51,20 @@ SC_MODULE(TestbenchModule) {
             wait();
         }
     }
+
+private:
+    // Add this function but DON'T use it yet
+    double getPowerForState(int state) {
+        switch(state) {
+            case 0: return 1.0357;  // At Work (Office)
+            case 1: return 1.0215;  // Not at Work
+            case 2: return 1.0284;  // At Work (Remote)
+            case 3: return 1.0960;  // Office Bluetooth
+            case 4: return 1.1500;  // Remote Bluetooth
+            case 5: return 1.0925;  // Not at Work Bluetooth
+            default: return 1.0;
+        }
+    }
 };
 
 /**

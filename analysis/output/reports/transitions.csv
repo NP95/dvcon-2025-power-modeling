@@ -1,0 +1,12 @@
+Timings,TimeSeconds,PrevStatus,Status,PowerBefore,Power [W],PowerJump
+00:00:01,1.0,,Not at Work,,1.09,
+00:00:10,10.0,Not at Work,At Work (In the Office),0.98,1.16,0.17999999999999994
+00:02:33,153.0,At Work (In the Office),At Work (Not in the office) Bluetooth,1.01,1.16,0.1499999999999999
+00:02:39,159.0,At Work (Not in the office) Bluetooth,At Work (Not in the office),1.33,1.19,-0.14000000000000012
+00:04:47,287.0,At Work (Not in the office),At Work (In the Office),1.01,1.16,0.1499999999999999
+00:06:11,371.0,At Work (In the Office),Not at Work Bluetooth,0.97,1.17,0.19999999999999996
+00:06:15,375.0,Not at Work Bluetooth,Not at Work,1.01,0.985,-0.025000000000000022
+00:10:06,606.0,Not at Work,At Work (In the Office),0.985,1.16,0.17499999999999993
+00:52:12,3132.0,At Work (In the Office),At Work (In the Office) Bluetooth,0.995,1.12,0.1250000000000001
+00:52:22,3142.0,At Work (In the Office) Bluetooth,At Work (In the Office),1.11,0.98,-0.13000000000000012
+01:08:17,4097.0,At Work (In the Office),Not at Work,1.06,1.09,0.030000000000000027
