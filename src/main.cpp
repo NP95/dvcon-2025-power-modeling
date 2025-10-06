@@ -114,38 +114,27 @@ private:
  * An example for the queue, that we are using for the triggering of the Testmodule that you will implement.
  */
 SC_MODULE(QUEUE) {
-    sc_core::sc_event_queue eq;
-    int status = -1;
     sc_core::sc_port<sc_core::sc_signal_out_if<int>> status_out;
-
-    SC_CTOR(QUEUE) : status_out("out"){
-        SC_THREAD(trigger);
-        SC_THREAD(catch_eq);
-        sensitive << eq; // cach_eq() will be triggered by event queue eq
-        dont_initialize(); // don't run catch_eq() during initialization phase
+    
+    SC_CTOR(QUEUE) : status_out("out") {
+        SC_THREAD(generateRealisticSequence);
     }
-
-    void trigger(){
-        while (true) {
-            eq.notify(1, sc_core::SC_SEC);
-            eq.notify(100, sc_core::SC_SEC);
-            eq.notify(3600, sc_core::SC_SEC);
-            eq.notify(3602, sc_core::SC_SEC);
-            wait(3602, sc_core::SC_SEC); // another round
-        }
-    }
-
-    void catch_eq(){
-        while (true) {
-            status_out->write(status);
-
-            if(status==4)
-                status=1;
-            else
-                status++;
-
-            wait(); // wait for eq
-        }
+    
+    void generateRealisticSequence() {
+        // Based on actual measurement data
+        status_out->write(1); wait(10, sc_core::SC_SEC);    // Not at Work
+        status_out->write(0); wait(143, sc_core::SC_SEC);   // Office
+        status_out->write(4); wait(6, sc_core::SC_SEC);     // Remote BT
+        status_out->write(2); wait(128, sc_core::SC_SEC);   // Remote
+        status_out->write(0); wait(84, sc_core::SC_SEC);    // Office
+        status_out->write(5); wait(4, sc_core::SC_SEC);     // Not Work BT
+        status_out->write(1); wait(231, sc_core::SC_SEC);   // Not at Work
+        status_out->write(0); wait(2526, sc_core::SC_SEC);  // Office (long)
+        status_out->write(3); wait(10, sc_core::SC_SEC);    // Office BT
+        status_out->write(0); wait(955, sc_core::SC_SEC);   // Office
+        status_out->write(1); wait(22, sc_core::SC_SEC);    // Not at Work
+        
+        std::cout << "Test sequence complete" << std::endl;
     }
 };
 
@@ -162,7 +151,7 @@ int sc_main(int argc, char* argv[]) {
 
 
 	std::cout << "Simulation started..." << std::endl;
-    sc_core::sc_start(1296000, sc_core::SC_SEC);
+    sc_core::sc_start(4119, sc_core::SC_SEC);
     
     // Add this line
     testbench.finalizeEnergy();
