@@ -41,7 +41,6 @@ SC_MODULE(TestbenchModule) {
     }
 
     void processing() {
-        // Initialize time tracking
         last_transition_time = sc_core::sc_time_stamp();
         previous_status = -1;
         
@@ -49,40 +48,32 @@ SC_MODULE(TestbenchModule) {
             int status = status_input->read();
             sc_core::sc_time current_time = sc_core::sc_time_stamp();
             
-            // Add debug output to verify time tracking
+            // CRITICAL: Calculate energy from PREVIOUS state
             if (previous_status >= 0) {
                 sc_core::sc_time duration = current_time - last_transition_time;
-                std::cout << "DEBUG: State " << previous_status 
-                         << " lasted " << duration.to_seconds() << " seconds" << std::endl;
+                double duration_sec = duration.to_seconds();
+                
+                // Use the new getPowerForState function
+                double prev_power = getPowerForState(previous_status);
+                double energy_increment = prev_power * duration_sec;
+                
+                // Accumulate ENERGY (not power!)
+                energyEstimation += energy_increment;
+                
+                std::cout << "State " << previous_status 
+                         << " consumed " << energy_increment << " J"
+                         << " (Total: " << energyEstimation << " J)" << std::endl;
             }
             
-            // Existing switch statement here (keep as is)
-            switch(status) {
-                case 0: //Boot Status
-                    std::cout << "Booting" << std::endl;
-                    powerEstimation = 1.6;  // Changed from += to =
-                    break;
-                case 1: //Not Available
-                    std::cout << "Employee not available" << std::endl;
-                    powerEstimation = 1.35;  // Changed from += to =
-                    break;
-                case 2: //Available
-                    std::cout << "Employee available" << std::endl;
-                    break;
-                case 3: //At University
-                    std::cout << "Employee somewhere" << std::endl;
-                    break;
-                case 4: //Bluetooth
-                    std::cout << "Bluetooth package received and sent" << std::endl;
-                    energyEstimation += 2.1;
-                    break;
-            }
+            // Set current instantaneous power (not accumulate!)
+            powerEstimation = getPowerForState(status);
             
-            // Update tracking variables
+            std::cout << "Transitioned to state " << status 
+                     << " (Power: " << powerEstimation << " W)" << std::endl;
+            
             previous_status = status;
             last_transition_time = current_time;
-            transition_count++;
-
+            
             wait();
         }
     }
